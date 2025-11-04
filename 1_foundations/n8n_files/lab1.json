@@ -1,0 +1,209 @@
+{
+  "name": "lab1",
+  "nodes": [
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-nano",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-nano"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        224,
+        352
+      ],
+      "id": "3e412716-6a50-499c-a391-e2824779000a",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "YKJvi9anIg1cXox7",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "You are a Business Domain Explorer Agent.  \nYour task is to identify one high-potential industry or business area where autonomous AI agents could create strong value in 2026.  \nChoose only ONE domain and explain briefly why it is promising.  \nKeep the answer concise (max 2 sentences).",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        352,
+        144
+      ],
+      "id": "3f6e9333-6d6b-48a3-8e5b-7d4a8f469e7a",
+      "name": "Business Area Generation"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-nano",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-nano"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        576,
+        352
+      ],
+      "id": "52d0fc71-bdbd-4f6d-8431-b00322e9fc24",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "YKJvi9anIg1cXox7",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a Pain-Point Analyst Agent.  \nThe chosen domain is: \"{{ $json.output }}\".\n\nDescribe one concrete, high-impact pain-point or operational challenge in this industry that could be improved with intelligent agents.  \n\nKeep the answer short and specific (1–2 sentences).\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        704,
+        144
+      ],
+      "id": "1d554056-54fc-405e-abda-6e4f95605d0d",
+      "name": "Pain-Point Identification"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a Solution Architect Agent.  \nThe identified pain-point is: \"{{ $json.output }}\".  \n\nDesign an Agentic AI system that could solve or significantly reduce this problem.\n\nExplain what the agent(s) would do, what tools or data sources they might use, and what the business impact would be.  \n\nLimit your answer to 3–4 sentences.\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1056,
+        144
+      ],
+      "id": "80ac1a16-0b37-4728-bc10-b1a310b887b5",
+      "name": "Solution Architect"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-nano",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-nano"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        928,
+        352
+      ],
+      "id": "f05c6b16-5783-4295-a709-c71a34c96bbb",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "YKJvi9anIg1cXox7",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Business Area Generation": [
+      {
+        "json": {
+          "output": "Healthcare, particularly in personalized diagnostics and patient monitoring, is highly promising in 2026 because autonomous AI agents can rapidly analyze complex medical data, enabling early intervention and reducing costs while improving patient outcomes."
+        }
+      }
+    ],
+    "Pain-Point Identification": [
+      {
+        "json": {
+          "output": "A major challenge is the manual interpretation of large, complex medical datasets, which delays diagnosis and treatment; intelligent agents can automate data analysis to provide rapid, accurate insights, enabling earlier interventions."
+        }
+      }
+    ]
+  },
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Business Area Generation",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Business Area Generation": {
+      "main": [
+        [
+          {
+            "node": "Pain-Point Identification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Pain-Point Identification",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pain-Point Identification": {
+      "main": [
+        [
+          {
+            "node": "Solution Architect",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Solution Architect",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ec117c19-cc98-4e0d-976a-6e094fe60e84",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3db9f5057b999a3248b886d35ae1d8cc72f967681d3fdf87f1787e15c918d3ba"
+  },
+  "id": "wo9NT9tn9Gq25zun",
+  "tags": []
+}
